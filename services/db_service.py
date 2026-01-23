@@ -26,3 +26,19 @@ def insert_transaction(txn: dict):
 
     conn.commit()
     conn.close()
+
+
+def fetch_recent_transactions(limit :int=10):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT * FROM transactions
+        ORDER BY date DESC, id DESC
+        LIMIT ?
+    """, (limit,))
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    return rows
